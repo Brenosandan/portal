@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Level Up — Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+
+:root {
+  --purple: #7c3aed;
+  --purple2: #6d28d9;
+  --purple3: #5b21b6;
+  --pbg: #f5f3ff;
+  --pbg2: #ede9fe;
+  --border: #ddd6fe;
+  --white: #ffffff;
+  --text: #1e1b4b;
+  --text2: #4c4580;
+  --muted: #7c71aa;
+  --green: #16a34a;
+  --red: #dc2626;
+  --gold: #d97706;
+  --shadow: 0 2px 10px rgba(124,58,237,.12);
+  --shadow2: 0 4px 24px rgba(124,58,237,.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--pbg); color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9px; }
+
+/* TOPBAR */
+.topbar {
+  background: var(--white);
+  border-bottom: 2px solid var(--purple);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: var(--shadow);
+}
+.tb-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--purple), #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-right: 16px;
+  white-space: nowrap;
+}
+.tb-nav {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+  overflow-x: auto;
+}
+.tb-nav a {
+  padding: 6px 13px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px;
+  white-space: nowrap;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: .2s;
+}
+.tb-nav a:hover { color: var(--purple); background: var(--pbg); }
+.tb-nav a.on { color: var(--purple); border-bottom-color: var(--purple); }
+.tb-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.tb-site-link {
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tb-site-link:hover { color: var(--purple); border-color: var(--purple); }
+.tb-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--purple);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+}
+.tb-user:hover { background: var(--purple2); }
+.tb-av {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.tb-name { font-size: 12px; font-weight: 700; color: #fff; }
+
+/* PAGES */
+.page { display: none; }
+.page.on { display: block; }
+
+/* LOGIN */
+#pg-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+  padding: 20px;
+}
+.login-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 36px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: var(--shadow2);
+}
+.login-logo { text-align: center; margin-bottom: 24px; }
+.login-logo h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--purple), #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.login-logo p { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 2px; }
+.login-tabs {
+  display: flex;
+  background: var(--pbg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+  margin-bottom: 16px;
+}
+.login-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: .2s;
+}
+.login-tab.on { background: var(--purple); color: #fff; }
+.field { margin-bottom: 10px; }
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--pbg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+  outline: none;
+  transition: .2s;
+}
+.field input:focus { border-color: var(--purple); background: var(--white); }
+.btn-purple {
+  width: 100%;
+  padding: 11px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+  letter-spacing: 1px;
+}
+.btn-purple:hover { background: var(--purple2); }
+.msg-err {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: #991b1b;
+  margin-top: 8px;
+  display: none;
+}
+.msg-ok {
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: #166534;
+  margin-top: 8px;
+  display: none;
+}
+
+/* HOME PAGE */
+.hero {
+  background: linear-gradient(135deg, #4c1d95, var(--purple));
+  color: #fff;
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.hero-text .greeting { font-size: 13px; opacity: .8; margin-bottom: 4px; }
+.hero-text .name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 3px;
+}
+.hero-text .team-name { font-size: 13px; opacity: .75; margin-bottom: 16px; }
+.hero-stats { display: flex; gap: 18px; }
+.hero-stat .val { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; }
+.hero-stat .lbl { font-size: 10px; opacity: .7; text-transform: uppercase; letter-spacing: 1px; }
+/* FIFA card */
+.player-card {
+  width: 120px;
+  background: linear-gradient(160deg, #312e81, #1e1b4b);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.15);
+  position: relative;
+  flex-shrink: 0;
+}
+.pc-rating {
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+}
+.pc-pos {
+  position: absolute;
+  top: 26px;
+  left: 8px;
+  font-size: 9px;
+  color: rgba(255,255,255,.6);
+  font-weight: 700;
+}
+.pc-av {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  border: 2px solid rgba(255,255,255,.25);
+  margin: 0 auto 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  color: #fff;
+}
+.pc-pname { font-size: 9px; font-weight: 700; color: #fff; letter-spacing: .5px; margin-bottom: 5px; }
+.pc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.pc-s { font-size: 8px; color: rgba(255,255,255,.65); }
+.pc-s b { display: block; font-size: 10px; color: #fff; }
+
+.home-body { padding: 20px 24px; }
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.quick-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: .2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow);
+}
+.quick-card:hover { border-color: var(--purple); transform: translateY(-2px); box-shadow: var(--shadow2); }
+.quick-icon { font-size: 22px; flex-shrink: 0; }
+.quick-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.quick-desc { font-size: 11px; color: var(--muted); }
+.match-mini {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 14px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.match-mini-teams { font-size: 13px; font-weight: 700; }
+.match-mini-score { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--purple); }
+.match-mini-meta { font-size: 11px; color: var(--muted); }
+
+/* PAGE HEADER (purple gradient) */
+.page-header {
+  background: linear-gradient(135deg, #4c1d95, var(--purple));
+  padding: 18px 24px;
+  color: #fff;
+}
+.page-header h2 { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; }
+.page-header p { font-size: 12px; opacity: .75; margin-top: 4px; }
+.page-body { padding: 18px 24px; }
+
+/* CHAMPIONSHIPS */
+.camp-header {
+  background: linear-gradient(135deg, #4c1d95, var(--purple));
+  padding: 16px 20px;
+  color: #fff;
+}
+.camp-header h2 { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; }
+.camp-header p { font-size: 12px; opacity: .75; margin-top: 3px; }
+.camp-body { padding: 14px; }
+
+/* Tournament card */
+.tourn-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: .2s;
+}
+.tourn-card:hover { border-color: var(--purple); box-shadow: var(--shadow2); }
+.tourn-top { padding: 15px; display: flex; align-items: center; gap: 13px; }
+.tourn-logo {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.tourn-logo-ph {
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--purple), #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.tourn-name { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+.tourn-meta { font-size: 12px; color: var(--muted); display: flex; gap: 10px; flex-wrap: wrap; }
+.tourn-meta .live { color: #dc2626; font-weight: 700; }
+.tourn-meta .upcoming { color: var(--purple); font-weight: 700; }
+.tourn-meta .done { color: #9ca3af; font-weight: 700; }
+.tourn-foot { border-top: 1px solid var(--border); padding: 10px 15px; background: var(--pbg); }
+.btn-classif {
+  width: 100%;
+  padding: 8px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: .2s;
+}
+.btn-classif:hover { background: var(--purple2); }
+
+/* CAMP DETAIL */
+.detail-header {
+  background: linear-gradient(135deg, #4c1d95, var(--purple));
+  padding: 16px 18px;
+  color: #fff;
+}
+.btn-back {
+  background: rgba(255,255,255,.15);
+  border: none;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.btn-back:hover { background: rgba(255,255,255,.25); }
+.detail-title { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; margin-bottom: 3px; }
+.detail-meta { font-size: 12px; opacity: .75; display: flex; gap: 12px; flex-wrap: wrap; }
+.detail-inscr { padding: 10px 18px; background: var(--pbg); border-bottom: 1px solid var(--border); }
+
+/* Camp tabs */
+.camp-tabs {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  overflow-x: auto;
+}
+.camp-tab {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  transition: .2s;
+  margin-bottom: -2px;
+}
+.camp-tab:hover { color: var(--purple); }
+.camp-tab.on { color: var(--purple); border-bottom-color: var(--purple); }
+.camp-panel { display: none; padding: 14px; }
+.camp-panel.on { display: block; }
+
+/* ROUNDS */
+.round-label {
+  background: var(--purple);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.match-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.mc-header {
+  background: var(--pbg);
+  padding: 7px 13px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+.mc-round { font-weight: 700; color: var(--purple); }
+.mc-date { color: var(--muted); }
+.mc-body {
+  padding: 13px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+.mc-team { text-align: center; }
+.mc-team-logo { width: 42px; height: 42px; object-fit: contain; margin: 0 auto 5px; display: block; border-radius: 6px; }
+.mc-team-logo-ph {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--purple), #a855f7);
+  margin: 0 auto 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.mc-team-name { font-size: 11px; font-weight: 700; color: var(--text); }
+.mc-score {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--purple);
+  text-align: center;
+}
+.mc-vs { font-size: 18px; font-weight: 700; color: var(--border); text-align: center; }
+.mc-footer {
+  border-top: 1px solid var(--border);
+  padding: 8px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.status-yes { color: #16a34a; font-size: 11px; font-weight: 700; }
+.status-no { color: #dc2626; font-size: 11px; font-weight: 700; }
+.mc-buttons { display: flex; gap: 5px; }
+.btn-sm-green { padding: 5px 11px; background: #16a34a; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.btn-sm-purple { padding: 5px 11px; background: var(--purple); color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.btn-sm-yellow { padding: 5px 11px; background: #f59e0b; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+/* REPORT PANEL (inline) */
+.report-panel { display: none; border-top: 2px solid var(--pbg2); background: var(--pbg); }
+.report-inner { padding: 14px; }
+.report-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.warn-box {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: #92400e;
+  margin-bottom: 12px;
+}
+.score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.score-team-name { font-size: 12px; font-weight: 700; color: var(--text2); }
+.score-input {
+  width: 50px;
+  padding: 7px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--purple);
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 7px;
+}
+.score-sep { font-size: 16px; color: var(--border); font-weight: 700; }
+
+/* Player report table */
+.players-wrap {
+  overflow-x: auto;
+  margin-bottom: 12px;
+  background: var(--white);
+  border-radius: 9px;
+  border: 1px solid var(--border);
+}
+.players-table { width: 100%; border-collapse: collapse; min-width: 540px; }
+.players-table thead { background: var(--purple); }
+.players-table th {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 8px 9px;
+  text-align: center;
+}
+.players-table th.left { text-align: left; }
+.players-table td {
+  padding: 7px 9px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+}
+.players-table tr:last-child td { border-bottom: none; }
+.players-table tr.active { background: var(--pbg); }
+.players-table tr.inactive { opacity: .4; }
+.pos-badge { padding: 2px 6px; border-radius: 5px; font-size: 10px; font-weight: 700; }
+.pos-GK { background: #dbeafe; color: #1e3a8a; }
+.pos-DEF { background: #dcfce7; color: #14532d; }
+.pos-MEI { background: #fef9c3; color: #78350f; }
+.pos-ATA { background: #fee2e2; color: #7f1d1d; }
+.num-input {
+  width: 42px;
+  padding: 5px 3px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--purple);
+}
+.num-input:disabled { opacity: .3; background: #f3f4f6; }
+.rating-wrap { display: flex; align-items: center; gap: 3px; justify-content: center; }
+.rating-wrap input[type=range] { width: 60px; accent-color: var(--purple); }
+.rating-val { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900; color: var(--purple); min-width: 24px; }
+
+/* Photo upload */
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 9px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: .2s;
+  color: var(--muted);
+  font-size: 12px;
+  background: var(--white);
+  margin-bottom: 12px;
+}
+.upload-area:hover { border-color: var(--purple); background: var(--pbg); }
+.upload-area input[type=file] { display: none; }
+.photo-preview { width: 100%; max-height: 130px; object-fit: cover; border-radius: 7px; margin-top: 7px; display: none; }
+.report-actions { display: flex; gap: 8px; }
+.btn-submit { padding: 9px 18px; background: var(--purple); color: #fff; border: none; border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-submit:hover { background: var(--purple2); }
+.btn-cancel { padding: 9px 14px; background: var(--white); color: var(--muted); border: 1px solid var(--border); border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.report-msg { padding: 8px 11px; border-radius: 7px; font-size: 12px; margin-top: 9px; display: none; }
+.report-msg.ok { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+.report-msg.err { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+
+/* VER MAIS */
+.photo-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.photo-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.photo-meta { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.photo-img {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+}
+.photo-caption { font-size: 10px; color: var(--muted); margin-top: 5px; }
+.photo-actions { display: flex; gap: 8px; margin-top: 10px; }
+.btn-approve { flex: 1; padding: 8px; background: #16a34a; color: #fff; border: none; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.btn-reject { flex: 1; padding: 8px; background: #dc2626; color: #fff; border: none; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.approved-badge { color: #16a34a; font-size: 12px; font-weight: 700; margin-top: 7px; }
+.rejected-badge { color: #dc2626; font-size: 12px; font-weight: 700; margin-top: 7px; }
+
+/* CLASSIFICATION TABLE */
+.classif-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.classif-table thead { background: var(--purple); }
+.classif-table th { font-size: 10px; font-weight: 700; color: #fff; text-transform: uppercase; padding: 9px 10px; text-align: center; }
+.classif-table th.left { text-align: left; }
+.classif-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); text-align: center; }
+.classif-table td.left { text-align: left; }
+.classif-table tr:last-child td { border-bottom: none; }
+.classif-table tr:hover td { background: var(--pbg); }
+.rank-num { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; color: var(--purple); }
+.pts-num { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: var(--purple); }
+.wins-num { color: #16a34a; font-weight: 700; }
+.losses-num { color: #dc2626; font-weight: 700; }
+.team-cell { display: flex; align-items: center; gap: 9px; }
+.team-cell-logo { width: 24px; height: 24px; object-fit: contain; border-radius: 4px; }
+
+/* ARTILHARIA */
+.filter-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 7px 15px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--muted);
+  transition: .2s;
+}
+.filter-btn.on { background: var(--purple); color: #fff; border-color: var(--purple); }
+.filter-btn:hover { border-color: var(--purple); color: var(--purple); }
+.art-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 14px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  box-shadow: var(--shadow);
+  transition: .2s;
+}
+.art-card:hover { border-color: var(--purple); box-shadow: var(--shadow2); }
+.art-rank { font-size: 16px; width: 28px; text-align: center; flex-shrink: 0; }
+.art-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--pbg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--purple);
+}
+.art-info { flex: 1; min-width: 0; }
+.art-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.art-meta { font-size: 11px; color: var(--muted); }
+.art-main-val { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: var(--purple); text-align: center; }
+.art-main-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; text-align: center; }
+.art-games { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); text-align: center; }
+.art-games-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; text-align: center; }
+
+/* MY TEAM */
+.team-header-box {
+  background: linear-gradient(135deg, #4c1d95, var(--purple));
+  color: #fff;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.team-logo-img { width: 54px; height: 54px; border-radius: 9px; object-fit: contain; flex-shrink: 0; }
+.team-logo-ph { width: 54px; height: 54px; border-radius: 9px; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.team-name-big { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 900; }
+.team-record { font-size: 12px; opacity: .75; margin-top: 3px; }
+.team-body { padding: 16px; }
+.players-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.players-section-head {
+  background: var(--purple);
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.players-section-title { font-size: 11px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+.btn-managers { padding: 5px 11px; background: rgba(255,255,255,.2); color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.managers-panel { background: var(--pbg); border-top: 2px solid var(--pbg2); padding: 12px 15px; display: none; }
+.managers-panel-info { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.mgr-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.mgr-row:last-child { border-bottom: none; }
+.mgr-name { flex: 1; font-size: 13px; font-weight: 700; color: var(--text); }
+.btn-promote { padding: 4px 10px; background: #dcfce7; border: 1px solid #86efac; color: #166534; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.btn-demote { padding: 4px 10px; background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.player-row-item { display: flex; align-items: center; gap: 9px; padding: 10px 15px; border-bottom: 1px solid var(--border); transition: .15s; }
+.player-row-item:last-child { border-bottom: none; }
+.player-row-item:hover { background: var(--pbg); }
+.player-av { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--pbg2); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: var(--purple); }
+.player-name { flex: 1; font-size: 13px; font-weight: 700; color: var(--text); }
+.mgr-badge { display: inline-block; padding: 2px 7px; background: var(--pbg2); color: var(--purple); border-radius: 99px; font-size: 10px; font-weight: 700; margin-left: 5px; }
+.player-goals { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; color: var(--purple); }
+
+/* SELECAO */
+.selecao-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; padding: 16px; }
+.sel-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px 10px;
+  text-align: center;
+  transition: .2s;
+  box-shadow: var(--shadow);
+}
+.sel-card:hover { border-color: var(--purple); transform: translateY(-2px); }
+.sel-av {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid var(--purple);
+  margin: 0 auto 9px;
+  display: block;
+  object-fit: cover;
+}
+.sel-av-ph {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--pbg2);
+  border: 3px solid var(--purple);
+  margin: 0 auto 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.sel-pos { display: inline-block; padding: 3px 9px; background: var(--purple); color: #fff; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; }
+.sel-name { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.sel-team { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.sel-stats { display: flex; gap: 8px; justify-content: center; border-top: 1px solid var(--border); padding-top: 8px; }
+.sel-stat-v { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: var(--purple); }
+.sel-stat-l { font-size: 9px; color: var(--muted); text-transform: uppercase; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty-icon { font-size: 48px; margin-bottom: 10px; }
+.empty-title { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--text2); margin-bottom: 5px; }
+.empty-desc { font-size: 13px; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 9999;
+  padding: 11px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  transform: translateY(80px);
+  opacity: 0;
+  transition: .3s;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ok { background: var(--purple); color: #fff; }
+.toast.err { background: #dc2626; color: #fff; }
+.toast.info { background: #0369a1; color: #fff; }
+
+@media (max-width: 768px) {
+  .tb-nav { display: none; }
+  .hero { flex-direction: column; }
+  .player-card { display: none; }
+  .selecao-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar" style="display:none;">
+  <div class="tb-logo">LEVEL UP</div>
+  <nav class="tb-nav">
+    <a onclick="navTo('home',this)">Inicio</a>
+    <a onclick="navTo('camps',this)">Campeonatos</a>
+    <a onclick="navTo('meu-time',this)">Meu Time</a>
+    <a onclick="navTo('artilharia',this)">Artilharia</a>
+    <a onclick="navTo('selecao',this)">Selecao</a>
+  </nav>
+  <div class="tb-right">
+    <a href="levelup-federacao.html" class="tb-site-link">Site Principal</a>
+    <div class="tb-user" onclick="sair()">
+      <div class="tb-av" id="tb-av">?</div>
+      <div class="tb-name" id="tb-name">-</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="pg-login">
+  <div class="login-box">
+    <div class="login-logo">
+      <h1>LEVEL UP</h1>
+      <p>PORTAL DE CAMPEONATOS</p>
+    </div>
+    <div class="login-tabs">
+      <div class="login-tab on" id="lt-in" onclick="mudarAba('in')">Entrar</div>
+      <div class="login-tab" id="lt-up" onclick="mudarAba('up')">Criar Conta</div>
+    </div>
+
+    <!-- Form: Entrar -->
+    <div id="form-in">
+      <div class="field"><input type="email" id="inp-email" placeholder="Email" autocomplete="email"/></div>
+      <div class="field"><input type="password" id="inp-pass" placeholder="Senha" onkeydown="if(event.key==='Enter')entrar()"/></div>
+      <button class="btn-purple" onclick="entrar()" id="btn-entrar">ENTRAR</button>
+      <div id="err-in" class="msg-err"></div>
+    </div>
+
+    <!-- Form: Criar Conta -->
+    <div id="form-up" style="display:none;">
+      <div class="field"><input type="text" id="inp-nome" placeholder="Nome / Gamertag"/></div>
+      <div class="field"><input type="email" id="inp-remail" placeholder="Email"/></div>
+      <div class="field"><input type="password" id="inp-rpass" placeholder="Senha (minimo 6 caracteres)"/></div>
+      <button class="btn-purple" onclick="criarConta()" id="btn-criar">CRIAR CONTA</button>
+      <div id="err-up" class="msg-err"></div>
+      <div id="ok-up" class="msg-ok"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="pg-home" class="page">
+  <div class="hero">
+    <div class="hero-text">
+      <div class="greeting">Bem-vindo ao portal,</div>
+      <div class="name" id="hero-nome">Jogador</div>
+      <div class="team-name" id="hero-time">Level Up Federacao</div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="val" id="h-gols">0</div><div class="lbl">Gols</div></div>
+        <div class="hero-stat"><div class="val" id="h-ass">0</div><div class="lbl">Assists</div></div>
+        <div class="hero-stat"><div class="val" id="h-media">-</div><div class="lbl">Media</div></div>
+        <div class="hero-stat"><div class="val" id="h-jogos">0</div><div class="lbl">Jogos</div></div>
+      </div>
+    </div>
+    <div class="player-card">
+      <div class="pc-rating" id="pc-rating">-</div>
+      <div class="pc-pos" id="pc-pos">-</div>
+      <div class="pc-av" id="pc-av">?</div>
+      <div class="pc-pname" id="pc-nome">-</div>
+      <div class="pc-stats">
+        <div class="pc-s"><b id="pc-g">0</b>GOL</div>
+        <div class="pc-s"><b id="pc-d">0</b>DEF</div>
+        <div class="pc-s"><b id="pc-a">0</b>ASS</div>
+      </div>
+    </div>
+  </div>
+  <div class="home-body">
+    <div class="section-title">Acoes Rapidas</div>
+    <div class="quick-grid">
+      <div class="quick-card" onclick="navTo('camps',null)">
+        <div class="quick-icon">🏆</div>
+        <div><div class="quick-title">Campeonatos</div><div class="quick-desc">Ver torneios e resultados</div></div>
+      </div>
+      <div class="quick-card" onclick="navTo('camps',null)">
+        <div class="quick-icon">📊</div>
+        <div><div class="quick-title">Reportar Partida</div><div class="quick-desc">Registrar resultado</div></div>
+      </div>
+      <div class="quick-card" onclick="navTo('meu-time',null)">
+        <div class="quick-icon">🛡️</div>
+        <div><div class="quick-title">Meu Time</div><div class="quick-desc">Elenco e managers</div></div>
+      </div>
+      <div class="quick-card" onclick="navTo('selecao',null)">
+        <div class="quick-icon">⭐</div>
+        <div><div class="quick-title">Selecao da Semana</div><div class="quick-desc">Melhores jogadores</div></div>
+      </div>
+    </div>
+    <div class="section-title">Ultimas Partidas</div>
+    <div id="home-matches"></div>
+  </div>
+</div>
+
+<!-- CAMPEONATOS -->
+<div id="pg-camps" class="page">
+  <!-- lista de campeonatos -->
+  <div id="view-lista">
+    <div class="camp-header">
+      <h2>Campeonatos</h2>
+      <p>Selecione um campeonato para ver detalhes</p>
+    </div>
+    <div class="camp-body" id="lista-content"></div>
+  </div>
+  <!-- detalhe de campeonato -->
+  <div id="view-detalhe" style="display:none;">
+    <div class="detail-header">
+      <button class="btn-back" onclick="voltarLista()">Voltar</button>
+      <div class="detail-title" id="detalhe-titulo">-</div>
+      <div class="detail-meta" id="detalhe-meta"></div>
+    </div>
+    <div class="detail-inscr" id="detalhe-inscr"></div>
+    <div class="camp-tabs">
+      <div class="camp-tab on" onclick="mudarTab('rodadas',this)">Rodadas</div>
+      <div class="camp-tab" onclick="mudarTab('classif',this)">Classificacao</div>
+      <div class="camp-tab" onclick="mudarTab('artilheiros',this)">Artilheiros</div>
+      <div class="camp-tab" id="tab-ver-mais" onclick="mudarTab('vermais',this)" style="display:none;">Ver Mais</div>
+    </div>
+    <div id="panel-rodadas" class="camp-panel on"><div id="rodadas-ct" style="padding:14px;"></div></div>
+    <div id="panel-classif" class="camp-panel"><div id="classif-ct" style="padding:14px;"></div></div>
+    <div id="panel-artilheiros" class="camp-panel"><div id="artilh-ct" style="padding:14px;"></div></div>
+    <div id="panel-vermais" class="camp-panel"><div id="vermais-ct" style="padding:14px;"></div></div>
+  </div>
+</div>
+
+<!-- MEU TIME -->
+<div id="pg-meu-time" class="page">
+  <div id="meu-time-ct"></div>
+</div>
+
+<!-- ARTILHARIA -->
+<div id="pg-artilharia" class="page">
+  <div class="page-header">
+    <h2>Artilharia Geral</h2>
+    <p>Ranking atualizado apos cada partida</p>
+  </div>
+  <div class="page-body">
+    <div class="filter-row">
+      <button class="filter-btn on" onclick="filtrar('gols',this)">Gols</button>
+      <button class="filter-btn" onclick="filtrar('assistencias',this)">Assistencias</button>
+      <button class="filter-btn" onclick="filtrar('defesas',this)">Defesas GK</button>
+      <button class="filter-btn" onclick="filtrar('media',this)">Media</button>
+    </div>
+    <div id="art-ct"></div>
+  </div>
+</div>
+
+<!-- SELECAO DA SEMANA -->
+<div id="pg-selecao" class="page">
+  <div class="page-header">
+    <h2>Selecao da Semana</h2>
+    <p id="sel-semana-info">Melhores jogadores desta semana</p>
+  </div>
+  <div class="selecao-grid" id="selecao-ct"></div>
+</div>
+
+
+<script>
+
+// ============================================
+// LEVEL UP PORTAL - JavaScript
+// ============================================
+
+var SB  = 'https://ispqmevoxvgxnsmlibwd.supabase.co';
+var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcHFtZXZveHZneG5zbWxpYndkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MDg1MzgsImV4cCI6MjA5NDE4NDUzOH0.xU9Wbv6fjBMIqptHnVOIotpKQyd7o09n_1IFhF1roew';
+var BKT = 'levelup';
+
+// State
+var TOKEN   = localStorage.getItem('lv_tok') || null;
+var USUARIO = null;
+var JOGADOR = null;
+var CAMP_ID = null;
+var ART_DADOS = [];
+var REP_JOGADORES = [];
+var REP_MATCH_ID  = null;
+
+try { USUARIO = JSON.parse(localStorage.getItem('lv_usr') || 'null'); } catch(e) {}
+try { JOGADOR = JSON.parse(localStorage.getItem('lv_plr') || 'null'); } catch(e) {}
+
+// - Utilitarios -
+function el(id) { return document.getElementById(id); }
+
+var toastTimer;
+function toast(msg, tipo) {
+  clearTimeout(toastTimer);
+  var t = el('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (tipo || 'ok');
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3500);
+}
+
+function mostrarErro(id, msg) {
+  var e = el(id);
+  if (e) { e.style.display = 'block'; e.textContent = msg; }
+}
+function limparErro(id) {
+  var e = el(id);
+  if (e) { e.style.display = 'none'; e.textContent = ''; }
+}
+
+function san(str) {
+  // Remove caracteres problematicos de strings que vao para atributos HTML
+  if (!str) return '';
+  return String(str).replace(/[<>"&]/g, '');
+}
+
+// - Requisicoes HTTP -
+function get(caminho, cb) {
+  var x = new XMLHttpRequest();
+  x.open('GET', SB + caminho, true);
+  x.setRequestHeader('apikey', KEY);
+  x.setRequestHeader('Authorization', 'Bearer ' + (TOKEN || KEY));
+  x.onload = function() {
+    if (x.status === 401) {
+      limparSessao();
+      cb(new Error('nao autenticado'), []);
+      return;
+    }
+    try {
+      cb(null, JSON.parse(x.responseText));
+    } catch(e) {
+      cb(e, []);
+    }
+  };
+  x.onerror = function() { cb(new Error('sem conexao'), []); };
+  x.send();
+}
+
+function post(url, dados, headers, cb) {
+  var x = new XMLHttpRequest();
+  x.open('POST', url, true);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.setRequestHeader('apikey', KEY);
+  x.setRequestHeader('Authorization', 'Bearer ' + (TOKEN || KEY));
+  if (headers) {
+    for (var k in headers) { x.setRequestHeader(k, headers[k]); }
+  }
+  x.onload = function() {
+    try {
+      cb(null, JSON.parse(x.responseText));
+    } catch(e) {
+      cb(null, {});
+    }
+  };
+  x.onerror = function() { cb(new Error('sem conexao'), null); };
+  x.send(JSON.stringify(dados));
+}
+
+function patch(caminho, dados, cb) {
+  var x = new XMLHttpRequest();
+  x.open('PATCH', SB + caminho, true);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.setRequestHeader('apikey', KEY);
+  x.setRequestHeader('Authorization', 'Bearer ' + (TOKEN || KEY));
+  x.setRequestHeader('Prefer', 'return=minimal');
+  x.onload = function() { if (cb) cb(null, x.status); };
+  x.onerror = function() { if (cb) cb(new Error('erro'), null); };
+  x.send(JSON.stringify(dados));
+}
+
+function upload(arquivo, caminho, cb) {
+  var x = new XMLHttpRequest();
+  x.open('POST', SB + '/storage/v1/object/' + BKT + '/' + caminho, true);
+  x.setRequestHeader('apikey', KEY);
+  x.setRequestHeader('Authorization', 'Bearer ' + TOKEN);
+  x.setRequestHeader('Content-Type', arquivo.type);
+  x.setRequestHeader('x-upsert', 'true');
+  x.onload = function() {
+    var url = SB + '/storage/v1/object/public/' + BKT + '/' + caminho + '?v=' + Date.now();
+    cb(null, url);
+  };
+  x.onerror = function() { cb(new Error('upload falhou'), null); };
+  x.send(arquivo);
+}
+
+// - Autenticacao -
+function mudarAba(aba) {
+  el('form-in').style.display = aba === 'in' ? 'block' : 'none';
+  el('form-up').style.display = aba === 'up' ? 'block' : 'none';
+  el('lt-in').className = 'login-tab' + (aba === 'in' ? ' on' : '');
+  el('lt-up').className = 'login-tab' + (aba === 'up' ? ' on' : '');
+}
+
+function entrar() {
+  limparErro('err-in');
+  var email = (el('inp-email').value || '').trim().toLowerCase();
+  var senha  = el('inp-pass').value || '';
+  if (!email || !senha) { mostrarErro('err-in', 'Preencha email e senha.'); return; }
+  el('btn-entrar').textContent = 'Entrando...';
+  var x = new XMLHttpRequest();
+  x.open('POST', SB + '/auth/v1/token?grant_type=password', true);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.setRequestHeader('apikey', KEY);
+  x.setRequestHeader('Authorization', 'Bearer ' + KEY);
+  x.onload = function() {
+    el('btn-entrar').textContent = 'ENTRAR';
+    try {
+      var d = JSON.parse(x.responseText);
+      if (d.access_token) {
+        TOKEN   = d.access_token;
+        USUARIO = d.user;
+        localStorage.setItem('lv_tok', TOKEN);
+        localStorage.setItem('lv_usr', JSON.stringify(USUARIO));
+        carregarPerfil(function() { mostrarPortal(); });
+      } else {
+        var msg = d.msg || d.error_description || 'Erro ao entrar.';
+        if (msg.indexOf('confirmed') > -1) msg = 'Confirme seu email primeiro.';
+        if (msg.indexOf('nvalid') > -1)    msg = 'Email ou senha incorretos.';
+        mostrarErro('err-in', msg);
+      }
+    } catch(e) { mostrarErro('err-in', 'Erro inesperado.'); }
+  };
+  x.onerror = function() { el('btn-entrar').textContent = 'ENTRAR'; mostrarErro('err-in', 'Sem conexao.'); };
+  x.send(JSON.stringify({ email: email, password: senha }));
+}
+
+function criarConta() {
+  limparErro('err-up');
+  var nome   = (el('inp-nome').value  || '').trim();
+  var email  = (el('inp-remail').value || '').trim().toLowerCase();
+  var senha  = el('inp-rpass').value  || '';
+  if (!nome || !email || !senha) { mostrarErro('err-up', 'Preencha todos os campos.'); return; }
+  if (senha.length < 6)          { mostrarErro('err-up', 'Senha minima: 6 caracteres.'); return; }
+  el('btn-criar').textContent = 'Criando...';
+  var x = new XMLHttpRequest();
+  x.open('POST', SB + '/auth/v1/signup', true);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.setRequestHeader('apikey', KEY);
+  x.setRequestHeader('Authorization', 'Bearer ' + KEY);
+  x.onload = function() {
+    el('btn-criar').textContent = 'CRIAR CONTA';
+    try {
+      var d = JSON.parse(x.responseText);
+      if (d.id) {
+        post(SB + '/rest/v1/players',
+          { user_id: d.id, name: nome, gamertag: nome, position: 'ATA' },
+          { Prefer: 'return=minimal' },
+          function() {}
+        );
+        var ok = el('ok-up');
+        if (ok) { ok.style.display = 'block'; ok.textContent = 'Conta criada! Faca login agora.'; }
+        setTimeout(function() { mudarAba('in'); }, 2000);
+      } else {
+        mostrarErro('err-up', d.msg || 'Erro ao criar conta.');
+      }
+    } catch(e) { mostrarErro('err-up', 'Erro inesperado.'); }
+  };
+  x.onerror = function() { el('btn-criar').textContent = 'CRIAR CONTA'; mostrarErro('err-up', 'Sem conexao.'); };
+  x.send(JSON.stringify({ email: email, password: senha }));
+}
+
+function sair() {
+  if (!confirm('Sair da conta?')) return;
+  limparSessao();
+  location.reload();
+}
+
+function limparSessao() {
+  TOKEN = null; USUARIO = null; JOGADOR = null;
+  localStorage.removeItem('lv_tok');
+  localStorage.removeItem('lv_usr');
+  localStorage.removeItem('lv_plr');
+}
+
+// - Perfil -
+function carregarPerfil(callback) {
+  if (!TOKEN || !USUARIO) { if (callback) callback(); return; }
+  get('/rest/v1/players?select=*,teams(id,name,logo_url,owner_id)&user_id=eq.' + USUARIO.id + '&limit=1',
+    function(err, dados) {
+      if (!err && dados && dados.length > 0) {
+        JOGADOR = dados[0];
+        localStorage.setItem('lv_plr', JSON.stringify(JOGADOR));
+      }
+      if (callback) callback();
+    }
+  );
+}
+
+// - Portal -
+function mostrarPortal() {
+  el('pg-login').style.display = 'none';
+  el('topbar').style.display   = 'flex';
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('on'); });
+  el('pg-home').classList.add('on');
+
+  var nome = JOGADOR ? JOGADOR.name : (USUARIO ? USUARIO.email.split('@')[0] : '?');
+  el('tb-av').textContent   = nome[0].toUpperCase();
+  el('tb-name').textContent = nome;
+  el('hero-nome').textContent = nome;
+  el('hero-time').textContent = (JOGADOR && JOGADOR.teams) ? JOGADOR.teams.name : 'Level Up Federacao';
+
+  if (JOGADOR) {
+    el('h-gols').textContent  = JOGADOR.total_goals   || 0;
+    el('h-ass').textContent   = JOGADOR.total_assists  || 0;
+    el('h-media').textContent = JOGADOR.avg_rating     || '-';
+    el('h-jogos').textContent = JOGADOR.total_matches  || 0;
+
+    var rating = Math.round((parseFloat(JOGADOR.avg_rating) || 0) * 10);
+    el('pc-rating').textContent = rating || '-';
+    el('pc-pos').textContent    = JOGADOR.position || '-';
+    el('pc-nome').textContent   = (JOGADOR.gamertag || nome).toUpperCase().slice(0, 12);
+    el('pc-g').textContent = JOGADOR.total_goals   || 0;
+    el('pc-a').textContent = JOGADOR.total_assists  || 0;
+    el('pc-d').textContent = JOGADOR.total_saves    || 0;
+    el('pc-av').textContent = nome[0].toUpperCase();
+  }
+
+  carregarPartidas();
+}
+
+// - Navegacao -
+function navTo(pagina, elem) {
+  document.querySelectorAll('.tb-nav a').forEach(function(a) { a.classList.remove('on'); });
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('on'); });
+  if (elem) elem.classList.add('on');
+  var pg = el('pg-' + pagina);
+  if (pg) pg.classList.add('on');
+
+  if (pagina === 'camps')      carregarCampeonatos();
+  if (pagina === 'meu-time')   carregarMeuTime();
+  if (pagina === 'artilharia') carregarArtilharia();
+  if (pagina === 'selecao')    carregarSelecao();
+}
+
+// - Home: ultimas partidas -
+function carregarPartidas() {
+  var cont = el('home-matches');
+  if (!cont) return;
+  get('/rest/v1/v_matches?select=*&order=created_at.desc&limit=5', function(err, lista) {
+    if (err || !lista || !lista.length) {
+      cont.innerHTML = '<div class="empty-state"><div class="empty-desc">Nenhuma partida ainda.</div></div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < lista.length; i++) {
+      var m  = lista[i];
+      var dt = m.match_date ? new Date(m.match_date).toLocaleDateString('pt-BR') : '--';
+      var pl = m.status === 'finished' ? m.home_score + ' x ' + m.away_score : 'vs';
+      html += '<div class="match-mini">';
+      html += '<div class="match-mini-teams">' + san(m.home_team_name) + ' <span class="match-mini-score">' + pl + '</span> ' + san(m.away_team_name) + '</div>';
+      html += '<div class="match-mini-meta">' + dt + (m.championship_name ? ' — ' + san(m.championship_name) : '') + '</div>';
+      html += '</div>';
+    }
+    cont.innerHTML = html;
+  });
+}
+
+// - Campeonatos -
+function carregarCampeonatos() {
+  el('view-lista').style.display   = 'block';
+  el('view-detalhe').style.display = 'none';
+  var cont = el('lista-content');
+  if (!cont) return;
+  cont.innerHTML = '<div class="empty-state"><div class="empty-desc">Carregando...</div></div>';
+
+  get('/rest/v1/championships?select=*&order=created_at.desc', function(err, lista) {
+    if (err || !lista || !lista.length) {
+      cont.innerHTML = '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-title">Sem campeonatos</div><div class="empty-desc">Nenhum campeonato ativo no momento.</div></div>';
+      return;
+    }
+    var status_texto  = { live: 'Ao Vivo', upcoming: 'Em Breve', done: 'Encerrado' };
+    var status_classe = { live: 'live', upcoming: 'upcoming', done: 'done' };
+    var html = '';
+    for (var i = 0; i < lista.length; i++) {
+      var c = lista[i];
+      var logo_html = c.logo_url
+        ? '<img class="tourn-logo" src="' + san(c.logo_url) + '" onerror="this.style.display='none'"/>'
+        : '<div class="tourn-logo-ph">🏆</div>';
+      var nome_san = san(c.name);
+      var sts  = status_texto[c.status]  || '--';
+      var cls  = status_classe[c.status] || 'done';
+      var meta = '<span class="' + cls + '">' + sts + '</span>';
+      if (c.season) meta += '<span>' + san(c.season) + '</span>';
+      if (c.prize)  meta += '<span>' + san(c.prize)  + '</span>';
+
+      html += '<div class="tourn-card">';
+      html += '<div class="tourn-top">' + logo_html;
+      html += '<div><div class="tourn-name">' + nome_san + '</div>';
+      html += '<div class="tourn-meta">' + meta + '</div></div></div>';
+      html += '<div class="tourn-foot">';
+      html += '<button class="btn-classif" data-id="' + san(c.id) + '" data-nome="' + nome_san + '" onclick="abrirCamp(this)">CLASSIFICACAO</button>';
+      html += '</div></div>';
+    }
+    cont.innerHTML = html;
+  });
+}
+
+function abrirCamp(btn) {
+  var id   = btn.getAttribute('data-id');
+  var nome = btn.getAttribute('data-nome');
+  CAMP_ID  = id;
+
+  el('view-lista').style.display   = 'none';
+  el('view-detalhe').style.display = 'block';
+  el('detalhe-titulo').textContent = nome;
+  el('rodadas-ct').innerHTML = '<div class="empty-state"><div class="empty-desc">Carregando...</div></div>';
+  el('classif-ct').innerHTML = '';
+  el('artilh-ct').innerHTML  = '';
+  el('vermais-ct').innerHTML = '';
+
+  // Reset tabs
+  document.querySelectorAll('.camp-tab').forEach(function(t) { t.classList.remove('on'); });
+  document.querySelectorAll('.camp-panel').forEach(function(p) { p.classList.remove('on'); });
+  document.querySelector('.camp-tab').classList.add('on');
+  el('panel-rodadas').classList.add('on');
+
+  // Ver Mais: mostrar so para managers e admins
+  var mostraVerMais = ehAdmin() || podeBotarReporte();
+  el('tab-ver-mais').style.display = mostraVerMais ? 'block' : 'none';
+
+  // Carrega meta do campeonato
+  get('/rest/v1/championships?id=eq.' + id + '&select=*&limit=1', function(err, dados) {
+    if (!err && dados && dados[0]) {
+      var c = dados[0];
+      var meta = '';
+      if (c.season) meta += '<span>' + san(c.season) + '</span>';
+      if (c.format) meta += '<span>' + san(c.format) + '</span>';
+      if (c.prize)  meta += '<span>Premio: ' + san(c.prize) + '</span>';
+      el('detalhe-meta').innerHTML = meta;
+    }
+  });
+
+  // Botao inscricao
+  var inscEl = el('detalhe-inscr');
+  if (inscEl) {
+    if (JOGADOR && JOGADOR.team_id) {
+      inscEl.innerHTML = '<button onclick="inscreverTime()" style="padding:7px 16px;background:var(--purple);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">Inscrever meu time</button>';
+    } else {
+      inscEl.innerHTML = '<span style="font-size:12px;color:var(--muted);">Entre em um time para se inscrever nos campeonatos.</span>';
+    }
+  }
+
+  carregarRodadas(id);
+}
+
+function voltarLista() {
+  el('view-lista').style.display   = 'block';
+  el('view-detalhe').style.display = 'none';
+  CAMP_ID = null;
+}
+
+function mudarTab(aba, elem) {
+  document.querySelectorAll('.camp-tab').forEach(function(t) { t.classList.remove('on'); });
+  document.querySelectorAll('.camp-panel').forEach(function(p) { p.classList.remove('on'); });
+  if (elem) elem.classList.add('on');
+  el('panel-' + aba).classList.add('on');
+
+  if (aba === 'classif')      carregarClassificacao(CAMP_ID);
+  if (aba === 'artilheiros')  carregarArtilheirosCamp(CAMP_ID);
+  if (aba === 'vermais')      carregarVerMais(CAMP_ID);
+}
+
+// - Rodadas -
+function carregarRodadas(campId) {
+  var cont = el('rodadas-ct');
+  if (!cont) return;
+
+  get('/rest/v1/v_matches?championship_id=eq.' + campId + '&order=match_date.asc', function(err, lista) {
+    if (err || !lista || !lista.length) {
+      cont.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-title">Sem partidas</div><div class="empty-desc">Nenhuma partida cadastrada ainda.</div></div>';
+      return;
+    }
+
+    // Agrupar por rodada
+    var rodadas  = {};
+    var ordem    = [];
+    for (var i = 0; i < lista.length; i++) {
+      var r = lista[i].round || 'Rodada 1';
+      if (!rodadas[r]) { rodadas[r] = []; ordem.push(r); }
+      rodadas[r].push(lista[i]);
+    }
+
+    var html = '';
+    for (var ri = 0; ri < ordem.length; ri++) {
+      var rodada  = ordem[ri];
+      var partidas = rodadas[rodada];
+      html += '<div class="round-label">📅 ' + san(rodada) + '</div>';
+
+      for (var pi = 0; pi < partidas.length; pi++) {
+        var m = partidas[pi];
+        var finalizado = m.status === 'finished';
+        var meu_time = JOGADOR && (m.home_team_id === JOGADOR.team_id || m.away_team_id === JOGADOR.team_id);
+        var data_str = m.match_date
+          ? new Date(m.match_date).toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'2-digit', hour:'2-digit', minute:'2-digit' })
+          : 'A definir';
+
+        var logo_casa = m.home_team_logo
+          ? '<img class="mc-team-logo" src="' + san(m.home_team_logo) + '" onerror="this.style.display='none'"/>'
+          : '<div class="mc-team-logo-ph">🛡️</div>';
+
+        var logo_visit = m.away_team_logo
+          ? '<img class="mc-team-logo" src="' + san(m.away_team_logo) + '" onerror="this.style.display='none'"/>'
+          : '<div class="mc-team-logo-ph">🛡️</div>';
+
+        var placar_html = finalizado
+          ? '<div class="mc-score">' + m.home_score + ' x ' + m.away_score + '</div>'
+          : '<div class="mc-vs">x</div>';
+
+        var status_html = finalizado
+          ? '<div class="status-yes">✅ Reportado</div>'
+          : '<div class="status-no">❌ Nao reportado</div>';
+
+        // Botoes — usando data-attributes para evitar problemas com quotes
+        var botoes_html = '<div class="mc-buttons">';
+        if (finalizado && m.notes_photo_url) {
+          botoes_html += '<button class="btn-sm-green" data-mid="' + san(m.id) + '" onclick="verMaisPartida(this)">Ver Mais</button>';
+        }
+        if (podeBotarReporte() && meu_time && !finalizado) {
+          botoes_html += '<button class="btn-sm-purple"'
+            + ' data-mid="' + san(m.id) + '"'
+            + ' data-hn="' + san(m.home_team_name) + '"'
+            + ' data-an="' + san(m.away_team_name) + '"'
+            + ' data-hid="' + san(m.home_team_id) + '"'
+            + ' data-aid="' + san(m.away_team_id) + '"'
+            + ' onclick="abrirReporte(this)">Reportar</button>';
+        }
+        if (podeBotarReporte() && meu_time && finalizado) {
+          botoes_html += '<button class="btn-sm-yellow"'
+            + ' data-mid="' + san(m.id) + '"'
+            + ' data-hn="' + san(m.home_team_name) + '"'
+            + ' data-an="' + san(m.away_team_name) + '"'
+            + ' data-hid="' + san(m.home_team_id) + '"'
+            + ' data-aid="' + san(m.away_team_id) + '"'
+            + ' onclick="abrirReporte(this)">Editar</button>';
+        }
+        botoes_html += '</div>';
+
+        html += '<div class="match-card">';
+        html += '<div class="mc-header"><span class="mc-round">' + san(rodada) + '</span><span class="mc-date">' + data_str + '</span></div>';
+        html += '<div class="mc-body">';
+        html += '<div class="mc-team">' + logo_casa + '<div class="mc-team-name">' + san(m.home_team_name) + '</div></div>';
+        html += placar_html;
+        html += '<div class="mc-team">' + logo_visit + '<div class="mc-team-name">' + san(m.away_team_name) + '</div></div>';
+        html += '</div>';
+        html += '<div class="mc-footer">' + status_html + botoes_html + '</div>';
+        html += '<div id="painel-' + san(m.id) + '" class="report-panel"></div>';
+        html += '</div>';
+      }
+    }
+    cont.innerHTML = html;
+  });
+}
+
+// - Reporte de partida -
+function podeBotarReporte() {
+  if (!JOGADOR) return false;
+  if (JOGADOR.is_manager) return true;
+  if (JOGADOR.teams && JOGADOR.teams.owner_id === USUARIO.id) return true;
+  return false;
+}
+
+function ehAdmin() {
+  return USUARIO && USUARIO.email === 'brenosbaldan@icloud.com';
+}
+
+function abrirReporte(btn) {
+  var matchId = btn.getAttribute('data-mid');
+  var homeN   = btn.getAttribute('data-hn');
+  var awayN   = btn.getAttribute('data-an');
+  var homeId  = btn.getAttribute('data-hid');
+  var awayId  = btn.getAttribute('data-aid');
+
+  if (!matchId) return;
+
+  var painel = el('painel-' + matchId);
+  if (!painel) return;
+
+  // Fechar se ja esta aberto
+  if (painel.style.display === 'block') {
+    painel.style.display = 'none';
+    REP_MATCH_ID = null;
+    REP_JOGADORES = [];
+    return;
+  }
+
+  REP_MATCH_ID = matchId;
+  painel.style.display = 'block';
+  painel.innerHTML = '<div class="report-inner"><div class="empty-desc">Carregando jogadores...</div></div>';
+
+  get('/rest/v1/players?team_id=in.(' + homeId + ',' + awayId + ')&select=*&order=position,name',
+    function(err, jogadores) {
+      if (err || !jogadores || !jogadores.length) {
+        painel.innerHTML = '<div class="report-inner"><p style="color:var(--muted);">Nenhum jogador cadastrado.</p></div>';
+        return;
+      }
+
+      REP_JOGADORES = jogadores;
+
+      // Ordenar: time da casa primeiro, depois visitante; por posicao
+      var ordem_pos = { GK: 0, DEF: 1, MEI: 2, ATA: 3 };
+      jogadores.sort(function(a, b) {
+        var ta = a.team_id === homeId ? 0 : 1;
+        var tb = b.team_id === homeId ? 0 : 1;
+        if (ta !== tb) return ta - tb;
+        return (ordem_pos[a.position] || 0) - (ordem_pos[b.position] || 0);
+      });
+
+      // Montar tabela de jogadores
+      var ultimo_time = null;
+      var linhas = '';
+      for (var i = 0; i < jogadores.length; i++) {
+        var j = jogadores[i];
+        // Separador de time
+        if (ultimo_time !== j.team_id) {
+          var nome_time = j.team_id === homeId ? homeN : awayN;
+          linhas += '<tr style="background:var(--purple);">';
+          linhas += '<td colspan="8" style="padding:6px 9px;font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;">' + san(nome_time) + '</td>';
+          linhas += '</tr>';
+          ultimo_time = j.team_id;
+        }
+        var pid   = san(j.id);
+        var eh_gk = j.position === 'GK';
+        var avatar = j.photo_url
+          ? '<img style="width:26px;height:26px;border-radius:50%;object-fit:cover;" src="' + san(j.photo_url) + '" onerror="this.style.display='none'"/>'
+          : '<div style="width:26px;height:26px;border-radius:50%;background:var(--pbg2);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:var(--purple);">' + san(j.name).charAt(0) + '</div>';
+
+        var input_def = eh_gk
+          ? '<input type="number" class="num-input" id="def-' + pid + '" value="0" min="0"/>'
+          : '<span style="color:var(--border);">—</span>';
+
+        linhas += '<tr class="active" id="linha-' + pid + '">';
+        linhas += '<td><input type="checkbox" style="width:15px;height:15px;accent-color:var(--purple);" id="chk-' + pid + '" data-pid="' + pid + '" data-gk="' + (eh_gk ? '1' : '0') + '" onchange="toggleJogador(this)" checked/></td>';
+        linhas += '<td><span class="pos-badge pos-' + san(j.position) + '">' + san(j.position) + '</span></td>';
+        linhas += '<td>' + avatar + '</td>';
+        linhas += '<td style="text-align:left;font-size:12px;font-weight:700;color:var(--text);">' + san(j.name) + '</td>';
+        linhas += '<td><input type="number" class="num-input" id="gols-' + pid + '" value="0" min="0"/> ⚽</td>';
+        linhas += '<td><input type="number" class="num-input" id="ass-'  + pid + '" value="0" min="0"/> 👟</td>';
+        linhas += '<td>' + input_def + (eh_gk ? ' 🧤' : '') + '</td>';
+        linhas += '<td><div class="rating-wrap"><input type="range" min="0" max="10" step="0.5" value="6" id="nota-' + pid + '" oninput="el('notaval-' + pid + '').textContent=parseFloat(this.value).toFixed(1)"/><span class="rating-val" id="notaval-' + pid + '">6.0</span> ⭐</div><div style="font-size:9px;color:var(--muted);">0=nao jogou</div></td>';
+        linhas += '</tr>';
+      }
+
+      var score_id_h = 'sc-h-' + matchId;
+      var score_id_a = 'sc-a-' + matchId;
+      var foto_id    = 'foto-' + matchId;
+      var fotoprev_id = 'fotoprev-' + matchId;
+      var msg_id     = 'rep-msg-' + matchId;
+
+      painel.innerHTML = '<div class="report-inner">'
+        + '<div class="report-title">📊 Reportar: ' + san(homeN) + ' x ' + san(awayN) + '</div>'
+        + '<div class="warn-box">⚠️ OBRIGATORIO: envie a foto das notas. O admin ira verificar antes de confirmar.</div>'
+        + '<div class="score-row">'
+        +   '<div class="score-team-name">' + san(homeN) + '</div>'
+        +   '<input type="number" class="score-input" id="' + score_id_h + '" value="0" min="0"/>'
+        +   '<div class="score-sep">x</div>'
+        +   '<input type="number" class="score-input" id="' + score_id_a + '" value="0" min="0"/>'
+        +   '<div class="score-team-name">' + san(awayN) + '</div>'
+        + '</div>'
+        + '<div class="players-wrap">'
+        +   '<table class="players-table">'
+        +     '<thead><tr>'
+        +       '<th></th><th>POS</th><th></th><th class="left">JOGADOR</th>'
+        +       '<th>GOLS</th><th>ASSISTS</th><th>DEFESAS</th><th>NOTA</th>'
+        +     '</tr></thead>'
+        +     '<tbody>' + linhas + '</tbody>'
+        +   '</table>'
+        + '</div>'
+        + '<div class="upload-area" onclick="el('' + foto_id + '').click()">'
+        +   '<input type="file" id="' + foto_id + '" accept="image/*" onchange="prevFoto(this,'' + fotoprev_id + '')" />'
+        +   '<div style="font-size:26px;margin-bottom:5px;">📸</div>'
+        +   '<div><strong>Clique para enviar a foto das notas</strong></div>'
+        +   '<div style="font-size:10px;margin-top:3px;">O admin da federacao ira verificar</div>'
+        +   '<img id="' + fotoprev_id + '" class="photo-preview"/>'
+        + '</div>'
+        + '<div class="report-actions">'
+        +   '<button class="btn-submit" data-mid="' + matchId + '" data-sh="' + score_id_h + '" data-sa="' + score_id_a + '" data-fid="' + foto_id + '" data-msg="' + msg_id + '" onclick="enviarReporte(this)">💾 Enviar Reporte</button>'
+        +   '<button class="btn-cancel" data-mid="' + matchId + '" onclick="fecharReporte(this)">Cancelar</button>'
+        + '</div>'
+        + '<div id="' + msg_id + '" class="report-msg"></div>'
+        + '</div>';
+    }
+  );
+}
+
+function toggleJogador(chk) {
+  var pid   = chk.getAttribute('data-pid');
+  var eh_gk = chk.getAttribute('data-gk') === '1';
+  var ativo = chk.checked;
+  var linha = el('linha-' + pid);
+  if (linha) linha.className = ativo ? 'active' : 'inactive';
+  var campos = ['gols-' + pid, 'ass-' + pid, 'nota-' + pid];
+  if (eh_gk) campos.push('def-' + pid);
+  for (var i = 0; i < campos.length; i++) {
+    var inp = el(campos[i]);
+    if (inp) inp.disabled = !ativo;
+  }
+}
+
+function prevFoto(input, prevId) {
+  var prev = el(prevId);
+  if (!input.files || !input.files[0] || !prev) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function fecharReporte(btn) {
+  var mid = btn.getAttribute('data-mid');
+  var painel = el('painel-' + mid);
+  if (painel) painel.style.display = 'none';
+  REP_MATCH_ID = null;
+  REP_JOGADORES = [];
+}
+
+function enviarReporte(btn) {
+  var matchId   = btn.getAttribute('data-mid');
+  var score_id_h = btn.getAttribute('data-sh');
+  var score_id_a = btn.getAttribute('data-sa');
+  var foto_id    = btn.getAttribute('data-fid');
+  var msg_id     = btn.getAttribute('data-msg');
+
+  function mostrarMsg(txt, ok) {
+    var m = el(msg_id);
+    if (!m) return;
+    m.style.display = 'block';
+    m.className = 'report-msg ' + (ok ? 'ok' : 'err');
+    m.textContent = txt;
+  }
+
+  var fotoInput = el(foto_id);
+  if (!fotoInput || !fotoInput.files[0]) {
+    mostrarMsg('Envie a foto das notas antes de submeter!', false);
+    return;
+  }
+
+  mostrarMsg('Enviando foto...', true);
+  var arquivo = fotoInput.files[0];
+  var ext     = arquivo.name.split('.').pop();
+  var caminho = 'match-notes/' + matchId + '_' + Date.now() + '.' + ext;
+
+  upload(arquivo, caminho, function(err, url_foto) {
+    if (err) { mostrarMsg('Erro ao enviar foto.', false); return; }
+    mostrarMsg('Salvando estatisticas...', true);
+
+    // Montar estatisticas
+    var linhas_stats = [];
+    for (var i = 0; i < REP_JOGADORES.length; i++) {
+      var j   = REP_JOGADORES[i];
+      var pid = j.id;
+      var chk = el('chk-' + pid);
+      if (!chk || !chk.checked) continue;
+      var nota = parseFloat((el('nota-' + pid) || {value: '0'}).value) || 0;
+      if (nota === 0) continue; // 0 = nao jogou
+      linhas_stats.push({
+        match_id:  matchId,
+        player_id: pid,
+        team_id:   j.team_id,
+        goals:     parseInt((el('gols-' + pid) || {value: '0'}).value) || 0,
+        assists:   parseInt((el('ass-'  + pid) || {value: '0'}).value) || 0,
+        gk_saves:  parseInt((el('def-'  + pid) || {value: '0'}).value) || 0,
+        rating:    nota,
+        played:    true
+      });
+    }
+
+    if (!linhas_stats.length) {
+      mostrarMsg('Marque pelo menos um jogador que jogou.', false);
+      return;
+    }
+
+    post(SB + '/rest/v1/match_stats', linhas_stats, { Prefer: 'return=minimal', 'on_conflict': 'match_id,player_id' },
+      function(err2) {
+        var placar_h = parseInt((el(score_id_h) || {value: '0'}).value) || 0;
+        var placar_a = parseInt((el(score_id_a) || {value: '0'}).value) || 0;
+        patch('/rest/v1/matches?id=eq.' + matchId, {
+          home_score: placar_h,
+          away_score: placar_a,
+          status: 'finished',
+          notes_photo_url: url_foto,
+          submitted_by: USUARIO.id
+        }, function(err3) {
+          mostrarMsg('Reporte enviado! O admin ira verificar a foto.', true);
+          toast('Partida reportada com sucesso!');
+          setTimeout(function() {
+            var painel = el('painel-' + matchId);
+            if (painel) painel.style.display = 'none';
+            carregarRodadas(CAMP_ID);
+          }, 2000);
+        });
+      }
+    );
+  });
+}
+
+// - Ver Mais (fotos) -
+function verMaisPartida(btn) {
+  var mid = btn.getAttribute('data-mid');
+  mudarTab('vermais', null);
+  document.querySelectorAll('.camp-tab').forEach(function(t) {
+    if (t.textContent.indexOf('Ver Mais') > -1) t.classList.add('on');
+  });
+  // Mostrar so essa partida
+  get('/rest/v1/v_matches?id=eq.' + mid + '&limit=1', function(err, dados) {
+    if (!err && dados && dados[0] && dados[0].notes_photo_url) {
+      el('vermais-ct').innerHTML = '<button onclick="carregarVerMais('' + san(CAMP_ID) + '')" style="margin-bottom:12px;padding:6px 12px;background:var(--purple);color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;">Ver Todas</button>' + montarFotoCard(dados[0]);
+    }
+  });
+}
+
+function carregarVerMais(campId) {
+  var cont = el('vermais-ct');
+  if (!cont) return;
+  cont.innerHTML = '<div class="empty-desc">Carregando...</div>';
+
+  get('/rest/v1/v_matches?championship_id=eq.' + campId + '&status=eq.finished&order=created_at.desc',
+    function(err, lista) {
+      if (err || !lista || !lista.length) {
+        cont.innerHTML = '<div class="empty-state"><div class="empty-icon">📸</div><div class="empty-title">Sem fotos</div><div class="empty-desc">Nenhum reporte enviado ainda.</div></div>';
+        return;
+      }
+      var com_foto = lista.filter(function(m) { return m.notes_photo_url; });
+      if (!com_foto.length) {
+        cont.innerHTML = '<div class="empty-state"><div class="empty-icon">📸</div><div class="empty-title">Sem fotos</div><div class="empty-desc">Nenhuma foto de notas enviada.</div></div>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < com_foto.length; i++) {
+        html += montarFotoCard(com_foto[i]);
+      }
+      cont.innerHTML = html;
+    }
+  );
+}
+
+function montarFotoCard(m) {
+  var dt = m.match_date ? new Date(m.match_date).toLocaleDateString('pt-BR') : '--';
+  var botoes_adm = ehAdmin()
+    ? '<div class="photo-actions"><button class="btn-approve" data-mid="' + san(m.id) + '" onclick="aprovarFoto(this)">Aprovar</button><button class="btn-reject" data-mid="' + san(m.id) + '" onclick="rejeitarFoto(this)">Rejeitar</button></div>'
+    : '';
+  var status_foto = '';
+  if (m.photo_verified === true)  status_foto = '<div class="approved-badge">✅ Aprovado</div>';
+  if (m.photo_verified === false) status_foto = '<div class="rejected-badge">❌ Rejeitado</div>';
+
+  return '<div class="photo-card">'
+    + '<div class="photo-title">' + san(m.home_team_name) + ' ' + m.home_score + ' x ' + m.away_score + ' ' + san(m.away_team_name) + '</div>'
+    + '<div class="photo-meta">' + dt + (m.round ? ' — ' + san(m.round) : '') + '</div>'
+    + '<a href="' + san(m.notes_photo_url) + '" target="_blank"><img class="photo-img" src="' + san(m.notes_photo_url) + '" onerror="this.src=''"/></a>'
+    + '<div class="photo-caption">📸 Foto das notas enviada pelo manager</div>'
+    + botoes_adm
+    + status_foto
+    + '</div>';
+}
+
+function aprovarFoto(btn) {
+  var mid = btn.getAttribute('data-mid');
+  patch('/rest/v1/matches?id=eq.' + mid, { photo_verified: true }, function(err) {
+    if (err) { toast('Erro.', 'err'); return; }
+    toast('Aprovado!');
+    var card = btn.closest('.photo-card');
+    if (card) { var acts = card.querySelector('.photo-actions'); if (acts) acts.innerHTML = '<div class="approved-badge">✅ Aprovado</div>'; }
+  });
+}
+
+function rejeitarFoto(btn) {
+  var mid = btn.getAttribute('data-mid');
+  patch('/rest/v1/matches?id=eq.' + mid, { photo_verified: false }, function(err) {
+    if (err) { toast('Erro.', 'err'); return; }
+    toast('Rejeitado.', 'info');
+    var card = btn.closest('.photo-card');
+    if (card) { var acts = card.querySelector('.photo-actions'); if (acts) acts.innerHTML = '<div class="rejected-badge">❌ Rejeitado</div>'; }
+  });
+}
+
+// - Classificacao -
+function carregarClassificacao(campId) {
+  var cont = el('classif-ct');
+  if (!cont) return;
+  cont.innerHTML = '<div class="empty-desc">Carregando...</div>';
+
+  get('/rest/v1/championship_teams?championship_id=eq.' + campId + '&select=teams(id,name,logo_url,wins,draws,losses,goals_for,goals_against)',
+    function(err, dados) {
+      if (err || !dados || !dados.length) {
+        cont.innerHTML = '<div class="empty-state"><div class="empty-icon">🛡️</div><div class="empty-title">Sem times</div><div class="empty-desc">Nenhum time inscrito ainda.</div></div>';
+        return;
+      }
+      var times = [];
+      for (var i = 0; i < dados.length; i++) {
+        var t = dados[i].teams || {};
+        t.pts = (t.wins || 0) * 3 + (t.draws || 0);
+        t.saldo = (t.goals_for || 0) - (t.goals_against || 0);
+        t.jogos = (t.wins || 0) + (t.draws || 0) + (t.losses || 0);
+        times.push(t);
+      }
+      times.sort(function(a, b) { return b.pts - a.pts || b.saldo - a.saldo; });
+
+      var thead = '<thead><tr><th>#</th><th class="left">Time</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GF</th><th>GC</th><th>SG</th><th>PTS</th></tr></thead>';
+      var tbody = '<tbody>';
+      var posicoes = ['🥇', '🥈', '🥉'];
+      for (var j = 0; j < times.length; j++) {
+        var t = times[j];
+        var logo_html = t.logo_url
+          ? '<img class="team-cell-logo" src="' + san(t.logo_url) + '" onerror="this.style.display='none'"/>'
+          : '<div style="width:24px;height:24px;border-radius:4px;background:var(--pbg2);display:flex;align-items:center;justify-content:center;font-size:10px;">🛡️</div>';
+        var pos_str = posicoes[j] || (j + 1);
+        var saldo_str = t.saldo > 0 ? '+' + t.saldo : String(t.saldo);
+        tbody += '<tr>';
+        tbody += '<td class="rank-num">' + pos_str + '</td>';
+        tbody += '<td class="left"><div class="team-cell">' + logo_html + '<strong>' + san(t.name) + '</strong></div></td>';
+        tbody += '<td>' + t.jogos + '</td>';
+        tbody += '<td class="wins-num">' + (t.wins   || 0) + '</td>';
+        tbody += '<td>'                  + (t.draws  || 0) + '</td>';
+        tbody += '<td class="losses-num">' + (t.losses || 0) + '</td>';
+        tbody += '<td>' + (t.goals_for    || 0) + '</td>';
+        tbody += '<td>' + (t.goals_against || 0) + '</td>';
+        tbody += '<td>' + saldo_str + '</td>';
+        tbody += '<td class="pts-num">' + t.pts + '</td>';
+        tbody += '</tr>';
+      }
+      tbody += '</tbody>';
+      cont.innerHTML = '<table class="classif-table">' + thead + tbody + '</table>';
+    }
+  );
+}
+
+// - Artilheiros do campeonato -
+function carregarArtilheirosCamp(campId) {
+  var cont = el('artilh-ct');
+  if (!cont) return;
+  cont.innerHTML = '<div class="empty-desc">Carregando...</div>';
+
+  get('/rest/v1/matches?championship_id=eq.' + campId + '&select=id&status=eq.finished',
+    function(err, partidas) {
+      if (err || !partidas || !partidas.length) {
+        cont.innerHTML = '<div class="empty-state"><div class="empty-icon">⚽</div><div class="empty-title">Sem dados</div><div class="empty-desc">Nenhuma partida finalizada ainda.</div></div>';
+        return;
+      }
+      var ids = partidas.map(function(p) { return p.id; }).join(',');
+      get('/rest/v1/match_stats?match_id=in.(' + ids + ')&played=eq.true&select=player_id,goals,assists,gk_saves,players(name,position,photo_url,teams(name))',
+        function(err2, stats) {
+          if (err2 || !stats || !stats.length) {
+            cont.innerHTML = '<div class="empty-state"><div class="empty-desc">Sem estatisticas ainda.</div></div>';
+            return;
+          }
+          // Agregar por jogador
+          var agg = {};
+          for (var i = 0; i < stats.length; i++) {
+            var s = stats[i];
+            var pid = s.player_id;
+            if (!agg[pid]) {
+              agg[pid] = { nome: s.players.name, pos: s.players.position, foto: s.players.photo_url, time: (s.players.teams ? s.players.teams.name : '--'), g: 0, a: 0, d: 0 };
+            }
+            agg[pid].g += s.goals    || 0;
+            agg[pid].a += s.assists  || 0;
+            agg[pid].d += s.gk_saves || 0;
+          }
+          var lista = [];
+          for (var k in agg) { lista.push(agg[k]); }
+          lista.sort(function(a, b) { return b.g - a.g; });
+
+          var posicoes = ['🥇', '🥈', '🥉'];
+          var thead = '<thead><tr><th>#</th><th class="left">Jogador</th><th>Time</th><th>⚽</th><th>👟</th><th>🧤</th></tr></thead>';
+          var tbody = '<tbody>';
+          for (var j = 0; j < Math.min(lista.length, 15); j++) {
+            var p = lista[j];
+            var pos_str = posicoes[j] || (j + 1);
+            tbody += '<tr>';
+            tbody += '<td class="rank-num">' + pos_str + '</td>';
+            tbody += '<td class="left" style="font-weight:700;">' + san(p.nome) + '</td>';
+            tbody += '<td style="color:var(--muted);font-size:12px;">' + san(p.time) + '</td>';
+            tbody += '<td class="pts-num">' + p.g + '</td>';
+            tbody += '<td>' + p.a + '</td>';
+            tbody += '<td style="color:#7c3aed;">' + p.d + '</td>';
+            tbody += '</tr>';
+          }
+          tbody += '</tbody>';
+          cont.innerHTML = '<table class="classif-table">' + thead + tbody + '</table>';
+        }
+      );
+    }
+  );
+}
+
+// - Inscrever time -
+function inscreverTime() {
+  if (!JOGADOR || !JOGADOR.team_id) { toast('Voce precisa estar em um time.', 'err'); return; }
+  if (!CAMP_ID) return;
+  if (!confirm('Inscrever seu time neste campeonato?')) return;
+  post(SB + '/rest/v1/championship_teams',
+    { championship_id: CAMP_ID, team_id: JOGADOR.team_id },
+    { Prefer: 'return=minimal' },
+    function(err, resp) {
+      if (resp && resp.code === '23505') toast('Time ja esta inscrito!', 'info');
+      else toast('Time inscrito com sucesso!');
+    }
+  );
+}
+
+// - Meu Time -
+function carregarMeuTime() {
+  var cont = el('meu-time-ct');
+  if (!cont) return;
+
+  if (!JOGADOR) {
+    cont.innerHTML = '<div class="empty-state"><div class="empty-icon">👤</div><div class="empty-title">Sem perfil</div><div class="empty-desc">Complete seu cadastro.</div></div>';
+    return;
+  }
+  if (!JOGADOR.team_id) {
+    cont.innerHTML = '<div class="empty-state"><div class="empty-icon">🛡️</div><div class="empty-title">Sem time</div><div class="empty-desc">Voce nao esta em nenhum time. Aguarde um convite do administrador.</div></div>';
+    return;
+  }
+
+  get('/rest/v1/teams?id=eq.' + JOGADOR.team_id + '&select=*', function(err, times) {
+    if (err || !times || !times.length) {
+      cont.innerHTML = '<div class="empty-state"><div class="empty-desc">Erro ao carregar time.</div></div>';
+      return;
+    }
+    var time = times[0];
+    var eh_dono = time.owner_id === USUARIO.id;
+
+    get('/rest/v1/players?team_id=eq.' + JOGADOR.team_id + '&select=*&order=position,name', function(err2, jogadores) {
+      var total = jogadores ? jogadores.length : 0;
+      var managers = jogadores ? jogadores.filter(function(j) { return j.is_manager; }).length : 0;
+
+      var logo_html = time.logo_url
+        ? '<img class="team-logo-img" src="' + san(time.logo_url) + '" onerror="this.style.display='none'"/>'
+        : '<div class="team-logo-ph">🛡️</div>';
+
+      var html = '';
+      html += '<div class="team-header-box">' + logo_html + '<div><div class="team-name-big">' + san(time.name) + '</div><div class="team-record">' + (time.wins || 0) + ' V — ' + (time.draws || 0) + ' E — ' + (time.losses || 0) + ' D</div></div></div>';
+      html += '<div class="team-body">';
+      html += '<div class="players-section">';
+      html += '<div class="players-section-head">';
+      html += '<div class="players-section-title">Elenco (' + total + ') — Managers: ' + managers + '/6</div>';
+      if (eh_dono) {
+        html += '<button class="btn-managers" onclick="toggleManagers()">Gerenciar Managers</button>';
+      }
+      html += '</div>';
+
+      // Painel de managers (so para o dono)
+      if (eh_dono) {
+        var linhas_mgr = '';
+        if (jogadores && jogadores.length) {
+          for (var i = 0; i < jogadores.length; i++) {
+            var j = jogadores[i];
+            var pid = san(j.id);
+            var btn_mgr = j.is_manager
+              ? '<button class="btn-demote" data-pid="' + pid + '" data-is="1" data-cnt="' + managers + '" onclick="alterarManager(this)">Remover</button>'
+              : '<button class="btn-promote" data-pid="' + pid + '" data-is="0" data-cnt="' + managers + '" onclick="alterarManager(this)">+ Manager</button>';
+            linhas_mgr += '<div class="mgr-row"><div class="mgr-name">' + san(j.name) + ' <span style="color:var(--muted);font-size:11px;">' + san(j.position) + '</span></div>' + btn_mgr + '</div>';
+          }
+        }
+        html += '<div class="managers-panel" id="managers-panel"><div class="managers-panel-info">Managers podem reportar partidas. Maximo 6 por time.</div>' + linhas_mgr + '</div>';
+      }
+
+      // Lista de jogadores
+      if (jogadores && jogadores.length) {
+        for (var i = 0; i < jogadores.length; i++) {
+          var j = jogadores[i];
+          var av_html = j.photo_url
+            ? '<img class="player-av" src="' + san(j.photo_url) + '" onerror="this.style.display='none'"/>'
+            : '<div class="player-av">' + san(j.name).charAt(0) + '</div>';
+          html += '<div class="player-row-item">' + av_html;
+          html += '<div class="player-name">' + san(j.name) + (j.is_manager ? '<span class="mgr-badge">Manager</span>' : '') + '</div>';
+          html += '<span class="pos-badge pos-' + san(j.position) + '">' + san(j.position) + '</span>';
+          html += '<span class="player-goals">' + (j.total_goals || 0) + ' ⚽</span>';
+          html += '</div>';
+        }
+      }
+      html += '</div></div>';
+      cont.innerHTML = html;
+    });
+  });
+}
+
+function toggleManagers() {
+  var p = el('managers-panel');
+  if (p) p.style.display = p.style.display === 'block' ? 'none' : 'block';
+}
+
+function alterarManager(btn) {
+  var pid    = btn.getAttribute('data-pid');
+  var eh_mgr = btn.getAttribute('data-is') === '1';
+  var count  = parseInt(btn.getAttribute('data-cnt')) || 0;
+  if (!eh_mgr && count >= 6) { toast('Maximo de 6 managers por time.', 'err'); return; }
+  patch('/rest/v1/players?id=eq.' + pid, { is_manager: !eh_mgr }, function(err) {
+    if (err) { toast('Erro ao alterar.', 'err'); return; }
+    toast(eh_mgr ? 'Manager removido.' : 'Manager adicionado!');
+    carregarMeuTime();
+  });
+}
+
+// - Artilharia Geral -
+function carregarArtilharia() {
+  var cont = el('art-ct');
+  if (!cont) return;
+  cont.innerHTML = '<div class="empty-desc">Carregando...</div>';
+  get('/rest/v1/v_top_scorers?select=*&limit=50', function(err, dados) {
+    if (err || !dados || !dados.length) {
+      cont.innerHTML = '<div class="empty-state"><div class="empty-icon">📈</div><div class="empty-title">Sem dados</div><div class="empty-desc">Nenhuma estatistica disponivel ainda.</div></div>';
+      return;
+    }
+    ART_DADOS = dados;
+    renderizarArt('gols');
+  });
+}
+
+function filtrar(tipo, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('on'); });
+  if (btn) btn.classList.add('on');
+  if (ART_DADOS.length) renderizarArt(tipo);
+  else carregarArtilharia();
+}
+
+function renderizarArt(tipo) {
+  var cont = el('art-ct');
+  if (!cont) return;
+  var dados = ART_DADOS.slice();
+
+  if (tipo === 'gols')        dados.sort(function(a, b) { return b.total_goals   - a.total_goals;   });
+  if (tipo === 'assistencias') dados.sort(function(a, b) { return b.total_assists - a.total_assists; });
+  if (tipo === 'defesas')     { dados = dados.filter(function(p) { return p.position === 'GK'; }); dados.sort(function(a, b) { return b.total_saves - a.total_saves; }); }
+  if (tipo === 'media')       dados.sort(function(a, b) { return b.avg_rating - a.avg_rating; });
+
+  var campo_val = { gols: 'total_goals', assistencias: 'total_assists', defesas: 'total_saves', media: 'avg_rating' };
+  var campo_lbl = { gols: 'gols', assistencias: 'assists', defesas: 'defesas', media: 'media' };
+  var chave = campo_val[tipo] || 'total_goals';
+  var label = campo_lbl[tipo] || 'gols';
+  var posicoes = ['🥇', '🥈', '🥉'];
+
+  var html = '';
+  var limite = Math.min(dados.length, 20);
+  for (var i = 0; i < limite; i++) {
+    var p = dados[i];
+    var av_html = p.photo_url
+      ? '<img class="art-avatar" src="' + san(p.photo_url) + '" onerror="this.style.display='none'"/>'
+      : '<div class="art-avatar">' + san(p.name).charAt(0) + '</div>';
+    var pos_str = posicoes[i] || (i + 1);
+    html += '<div class="art-card">';
+    html += '<div class="art-rank">' + pos_str + '</div>';
+    html += av_html;
+    html += '<div class="art-info"><div class="art-name">' + san(p.name) + '</div><div class="art-meta">' + san(p.team_name || '--') + ' — ' + san(p.position) + '</div></div>';
+    html += '<div><div class="art-main-val">' + (p[chave] || 0) + '</div><div class="art-main-lbl">' + label + '</div></div>';
+    html += '<div style="margin-left:10px;"><div class="art-games">' + (p.total_matches || 0) + '</div><div class="art-games-lbl">jogos</div></div>';
+    html += '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+// - Selecao da Semana -
+function carregarSelecao() {
+  var cont = el('selecao-ct');
+  if (!cont) return;
+  var agora  = new Date();
+  var inicio = new Date(agora.getFullYear(), 0, 1);
+  var semana = Math.ceil((((agora - inicio) / 86400000) + inicio.getDay() + 1) / 7);
+  var ano    = agora.getFullYear();
+  var info   = el('sel-semana-info');
+  if (info) info.textContent = 'Semana ' + semana + ' de ' + ano;
+
+  get('/rest/v1/weekly_selection?select=*,players(name,gamertag,photo_url,position,total_goals,total_assists,total_saves,avg_rating,teams(name))&week_number=eq.' + semana + '&year=eq.' + ano,
+    function(err, dados) {
+      if (err || !dados || !dados.length) {
+        cont.innerHTML = '<div class="empty-state" style="grid-column:span 4;"><div class="empty-icon">⭐</div><div class="empty-title">Sem selecao</div><div class="empty-desc">Nenhuma selecao definida para esta semana.</div></div>';
+        return;
+      }
+      var pos_label = { GK: 'Goleiro', DEF: 'Defensor', MEI: 'Meia', ATA: 'Atacante' };
+      var pos_icone = { GK: '🧤', DEF: '🛡️', MEI: '⚙️', ATA: '⚡' };
+
+      var html = '';
+      for (var i = 0; i < dados.length; i++) {
+        var s = dados[i];
+        var p = s.players;
+        if (!p) continue;
+        var pos = s.position || p.position;
+        var av_html = p.photo_url
+          ? '<img class="sel-av" src="' + san(p.photo_url) + '" onerror="this.style.display='none'"/>'
+          : '<div class="sel-av-ph">' + (pos_icone[pos] || '⭐') + '</div>';
+
+        html += '<div class="sel-card">';
+        html += av_html;
+        html += '<div class="sel-pos">' + (pos_label[pos] || pos) + '</div>';
+        html += '<div class="sel-name">' + san(p.name) + '</div>';
+        html += '<div class="sel-team">' + (p.teams ? san(p.teams.name) : 'Sem time') + '</div>';
+        html += '<div class="sel-stats">';
+        html += '<div class="sel-stat"><div class="sel-stat-v">' + (p.total_goals  || 0) + '</div><div class="sel-stat-l">Gols</div></div>';
+        html += '<div class="sel-stat"><div class="sel-stat-v">' + (p.total_assists || 0) + '</div><div class="sel-stat-l">Ass.</div></div>';
+        html += '<div class="sel-stat"><div class="sel-stat-v">' + (p.avg_rating   || '0') + '</div><div class="sel-stat-l">Media</div></div>';
+        html += '</div>';
+        if (s.reason) html += '<div style="font-size:10px;color:var(--gold);margin-top:5px;">' + san(s.reason) + '</div>';
+        html += '</div>';
+      }
+      cont.innerHTML = html;
+    }
+  );
+}
+
+// - Inicializacao -
+document.addEventListener('DOMContentLoaded', function() {
+  if (TOKEN && USUARIO) {
+    var x = new XMLHttpRequest();
+    x.open('GET', SB + '/auth/v1/user', true);
+    x.setRequestHeader('apikey', KEY);
+    x.setRequestHeader('Authorization', 'Bearer ' + TOKEN);
+    x.onload = function() {
+      if (x.status === 200) {
+        carregarPerfil(function() { mostrarPortal(); });
+      } else {
+        limparSessao();
+      }
+    };
+    x.onerror = function() {};
+    x.send();
+  }
+});
+
+</script>
+</body>
+</html>
